@@ -44,9 +44,9 @@ async def bot_webhook(update: types.Update):
             dt_upto=json_object["dt_upto"],
             group_type=json_object["group_type"]
         )
-        aggregate(message_data, collection)
-
-        await bot.send_message(chat_id, "THIS_IS_SPARTA")
+        out_msg = aggregate(message_data, collection)
+        print(out_msg)
+        await bot.send_message(chat_id, str(out_msg))
     except Exception as e:
         await bot.send_message(chat_id, "something wrong")
 
