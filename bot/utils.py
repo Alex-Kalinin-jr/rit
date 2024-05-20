@@ -53,6 +53,28 @@ def aggregate(data: MessageData, collection):
             "dataset": [doc["value"] for doc in data],
             "labels": [doc["label"] for doc in data]
         }
-        return output
+        return summarize_values(output)
     except Exception as e:
         print(e)
+
+def summarize_values(data):
+    values = []
+    dates = []
+    current_sum = data["values"][0]
+    current_date = data["labels"][0]
+
+    for i in range(len(data["dataset"])):
+        if data["labels"][i] == current_date:
+            current_sum += data["dataset"][i]
+        else:
+            values.append(current_sum)
+            dates.append(current_date)
+            current_sum = data["dataset"][i]
+            current_date = data["labels"][i]
+
+    # Add the last sum and date
+    values.append(current_sum)
+    dates.append(current_date)
+
+    return {"dataset": values, "labels": dates}
+
