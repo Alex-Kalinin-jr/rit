@@ -4,14 +4,21 @@ import ngrok
 import datetime
 from fastapi import FastAPI
 from aiogram import Bot, Dispatcher, types
+import pymongo
+from pymongo import MongoClient
 
 from config import TELEGRAM_TOKEN
 from models import MessageData
+from utils import aggregate
 
 WEBHOOK_PATH = f"/bot/{TELEGRAM_TOKEN}"
 
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher()
+
+client = MongoClient("localhost", 27017)
+db = client["sample_db"]
+collection = db['sample_collection']
 
 async def lifespan(app):
     tmp = await ngrok.forward(8000, authtoken_from_env=True)
@@ -32,7 +39,12 @@ async def bot_webhook(update: types.Update):
     chat_id = update.message.chat.id
     try:
         json_object = json.loads(update.message.text)
-        message_data = MessageData(text=json_object)
+        message_data = MessageData(
+            dt_from=json_object["dt_from"],
+            dt_upto=json_object["dt_upto"],
+            group_type=json_object["group_type"]
+        )
+        aggregate(message_data, collection)
 
         await bot.send_message(chat_id, "THIS_IS_SPARTA")
     except Exception as e:
