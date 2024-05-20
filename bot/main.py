@@ -1,10 +1,7 @@
-import asyncio
 import json
 import ngrok
-import datetime
 from fastapi import FastAPI
 from aiogram import Bot, Dispatcher, types
-import pymongo
 from pymongo import MongoClient
 
 from config import TELEGRAM_TOKEN
@@ -23,7 +20,7 @@ collection = db['sample_collection']
 async def lifespan(app):
     tmp = await ngrok.forward(8000, authtoken_from_env=True)
     forward_url = tmp.url()
-    
+
     WEBHOOK_URL = f"{forward_url}{WEBHOOK_PATH}"
 
     await bot.delete_webhook(drop_pending_updates=True)
@@ -46,7 +43,7 @@ async def bot_webhook(update: types.Update):
         )
         out_msg = aggregate(message_data, collection)
         await bot.send_message(chat_id, str(out_msg))
-    except Exception as e:
+    except Exception:
         await bot.send_message(chat_id, "something wrong")
 
 
