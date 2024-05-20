@@ -22,7 +22,8 @@ def find_records(start: datetime, end: datetime):
 
 
 def main():
-    find_records(datetime.datetime(2022, 12, 31, 14, 1), datetime.datetime(2022, 12, 31, 17, 1))
+    find_records(datetime.datetime(2022, 12, 31, 14, 1), 
+                 datetime.datetime(2022, 12, 31, 17, 1))
 
 
 if __name__ == "__main__":
