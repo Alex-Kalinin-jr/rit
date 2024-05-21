@@ -110,7 +110,6 @@ def fill_with_zero(data, message_data: MessageData):
             new_dataset.append(data['dataset'][index])
             new_labels.append(date_str)
         else:
-            print('detected missing date: ' + date_str)
             new_dataset.append(0)
             new_labels.append(date_str)
 
@@ -132,4 +131,5 @@ def add_months(sourcedate, months):
     year = sourcedate.year + month // 12
     month = month % 12 + 1
     day = min(sourcedate.day, calendar.monthrange(year,month)[1])
-    return datetime.date(year, month, day)
+    date = datetime(year, month, day)
+    return date
