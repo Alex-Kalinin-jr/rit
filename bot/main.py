@@ -13,9 +13,10 @@ WEBHOOK_PATH = f"/bot/{TELEGRAM_TOKEN}"
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher()
 
-client = MongoClient("localhost", 27017)
+client = MongoClient("mongodb://mongo_service:27017")
 db = client["sample_db"]
 collection = db['sample_collection']
+# print(client.list_database_names())
 
 async def lifespan(app):
     tmp = await ngrok.forward(8000, authtoken_from_env=True)
@@ -30,6 +31,7 @@ async def lifespan(app):
     await bot.session.close()
 
 app = FastAPI(lifespan=lifespan)
+
 
 @app.post(f"{WEBHOOK_PATH}")
 async def bot_webhook(update: types.Update):
