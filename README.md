@@ -3,7 +3,7 @@
 Small microservice app for interaction between telegram bot and mongoDB
 
 - Go to **develop** branch
-- Go into bot directory
+- Go into **bot** directory
 - Toucn **.env** file and fill it with content:
 
 TELEGRAM_TOKEN="your-telegram-bot-token"<br>
