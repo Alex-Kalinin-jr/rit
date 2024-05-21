@@ -16,7 +16,8 @@ dp = Dispatcher()
 client = MongoClient("mongodb://mongo_service:27017")
 db = client["sample_db"]
 collection = db['sample_collection']
-# print(client.list_database_names())
+print(client.list_database_names())
+print(db.list_collection_names())
 
 async def lifespan(app):
     tmp = await ngrok.forward(8000, authtoken_from_env=True)
